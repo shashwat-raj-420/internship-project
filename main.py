@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+from SendEmail import SendEmail
 
 app = Flask(__name__)
 
@@ -11,11 +12,12 @@ def index():
 
 @app.route('/process', methods=['POST'])
 def process():
-    data = request.get_json() # retrieve the data sent from JavaScript
-    # process the data using Python code
-    result = data
-    print("this is map: ",request.get_json())
-    return render_template('index.html')
+    data = request.get_json() 
+    # retrieve the data sent from JavaScript
+    
+    sendEmailTo = SendEmail(data["email"])
+    sendEmailTo.send_email()
+    return render_template("index.html")
 
 
 # Error handling
