@@ -1,9 +1,9 @@
 from flask import Flask, request, render_template, jsonify
-from SendEmail import SendEmail
+from firebase_setup_py import CreateFirebaseUser
 
 app = Flask(__name__)
 
-# HTML template (you can also put this in a separate file)
+# path/to/serviceAccountKey.json
 
 @app.route('/')
 def index():
@@ -12,11 +12,11 @@ def index():
 
 @app.route('/process', methods=['POST'])
 def process():
-    data = request.get_json() 
-    # retrieve the data sent from JavaScript
+    data = request.get_json()
+
+    user = CreateFirebaseUser(data = data)
+    user.createUser()
     
-    sendEmailTo = SendEmail(data["email"])
-    sendEmailTo.send_email()
     return render_template("index.html")
 
 
@@ -35,4 +35,18 @@ def internal_error(error):
 
 if __name__ == '__main__':
     # Enable debug mode for development
-    app.run(port=5500,debug=True)
+    app.run(port = 5500, debug = True)
+
+
+# {'name': 'Shashwat', 'email': 'sh10ashwat@gmail.com', 
+# 'phone': '654738', 'experience': 'beginner', 'goal': 'reyyrthfg'}
+
+
+# todo
+'''
+send user data to the firebase file
+have it check and return if the user already has a account based on the email
+if yes then do not create another user or send an email to him again
+possibly tell him that you already have signed up
+
+'''
