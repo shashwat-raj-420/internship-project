@@ -1,16 +1,20 @@
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+import os
+
 
 class SendEmail:
-    sender_email = "ShashwatRajPhotosAcc@gmail.com"
-    sender_password = "xyqu dacm rslg kswd"
 
-    def __init__(self,email):
+    def __init__(self, email):
+        load_dotenv()
+        self.sender_email = os.getenv("sender_email")
+        self.sender_password = os.getenv("sender_password")
         self.email = email
 
     def send_email(self):
-    # Email configuration
+        # Email configuration
         smtp_server = "smtp.gmail.com"
         smtp_port = 587
 
